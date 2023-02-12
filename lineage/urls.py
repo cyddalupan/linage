@@ -22,5 +22,6 @@ urlpatterns = [
 
 urlpatterns = [
     path('hello/', views.my_view, name='hello'),
+    path('other/', views.other_page, name='other'),
     path('admin/', admin.site.urls),
 ]
