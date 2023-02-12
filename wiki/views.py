@@ -2,4 +2,5 @@ from django.shortcuts import render
 from django.http import HttpResponse
 
 def my_view(request):
-    return HttpResponse("Hello, World!")
+    context = {}
+    return render(request, 'wiki/index.html', context)
