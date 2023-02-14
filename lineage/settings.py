@@ -37,9 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Installs
-    'bootstrap5',
-    'django_bootstrap_icons',
     # Created
     'wiki.apps.WikiConfig',
 ]
