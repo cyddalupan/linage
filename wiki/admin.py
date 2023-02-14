@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from wiki.models import WikiContent, WikiContentArchive, WikiFolder
+
+
+admin.site.register(WikiContent)
+admin.site.register(WikiFolder)
+admin.site.register(WikiContentArchive)
