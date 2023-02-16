@@ -18,9 +18,10 @@ from django.urls import path
 from wiki import views
 
 urlpatterns = [
-]
+    path('wiki-home/', views.wiki_home, name='wiki home'),
+    path('wiki-folder/<int:folder_id>/', views.wiki_folder, name='wiki folder'),
+    path('wiki-search/<str:query>/', views.wiki_search, name='wiki search'),
 
-urlpatterns = [
     path('hello/', views.my_view, name='hello'),
     path('other/', views.other_page, name='other'),
     path('admin/', admin.site.urls),
