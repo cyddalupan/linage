@@ -1,6 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponse, HttpResponseRedirect
 from django.db.models import Q
+from django.urls import reverse
 
 from .models import WikiContent, WikiFolder
 
@@ -50,3 +51,17 @@ def wiki_page(request, wiki_id):
         'wiki': wiki,
     }
     return render(request, 'wiki/wiki_single.html', context)
+
+def wiki_edit(request, wiki_id):
+    wiki = WikiContent.objects.get(pk=wiki_id)
+    context = {
+        'wiki': wiki,
+    }
+    return render(request, 'wiki/wiki_edit.html', context)
+
+def wiki_update(request, wiki_id):
+    wiki = get_object_or_404(WikiContent, pk=wiki_id)
+    wiki.title = request.POST['title']
+    wiki.content = request.POST['content']
+    wiki.save()
+    return HttpResponseRedirect(reverse('wiki page', args=(wiki.id,)))

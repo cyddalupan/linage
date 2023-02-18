@@ -23,6 +23,8 @@ urlpatterns = [
     path('wiki-folder/<int:folder_id>/', views.wiki_folder, name='wiki folder'),
     path('wiki-search/', views.wiki_search, name='wiki search'),
     path('wiki-page/<int:wiki_id>', views.wiki_page, name='wiki page'),
+    path('wiki-edit/<int:wiki_id>', views.wiki_edit, name='wiki edit'),
+    path('wiki-update/<int:wiki_id>', views.wiki_update, name='wiki update'),
 
     path('hello/', views.my_view, name='hello'),
     path('other/', views.other_page, name='other'),

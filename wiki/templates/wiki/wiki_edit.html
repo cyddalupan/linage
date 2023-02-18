@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
+    <h1>
+        <a href="{% url 'wiki home' %}">
+            <i class="bi bi-newspaper"></i>
+            Wiki
+        </a>
+    </h1>
+
+    <br><br>
+    <form action="{% url 'wiki update' wiki.id %}" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="text" class="form-control" name="title" value="{{ wiki.title }}" placeholder="Title">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Content</label>
+            <textarea class="form-control" name="content" rows="10">{{ wiki.content }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+
+{% endblock %}
