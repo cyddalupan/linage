@@ -4,21 +4,40 @@
     {% load static %}
     <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
     <h1>
-        <i class="bi bi-newspaper"></i>
-        Wiki
+        <a href="{% url 'wiki home' %}">
+            <i class="bi bi-newspaper"></i>
+            Wiki
+        </a>
     </h1>
 
-    <div class="input-group">
-        <span class="input-group-text">
-            <i class="bi bi-search"></i>
-        </span>
-        <input type="text" class="form-control" placeholder="Search" aria-label="Search">
+    <p>
+        <figcaption class="blockquote-footer">
+            In order to maintain better organization, it's recommended that we limit the number of items in each folder to ten. For instance, if there are more than ten items in a particular folder "folder or wiki", we should consider grouping them and moving them to a more appropriately categorized folder. This approach not only prevents over-organization but also encourages timely grouping of items, without waiting for them to accumulate beyond ten.
+        </figcaption>
+    </p>
+
+    </br>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form action="{% url 'wiki search' %}" method="get">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" name="search" placeholder="Search" aria-label="Search">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+      <div class="col-md-8"></div>
     </div>
+
 
     <ul class="list-group">
         {% for folder in wiki_folders %}
             <li class="list-group-item">
-                <a href="/wiki-folder/{{ folder.id }}/">
+                <a href="{% url 'wiki folder' folder.id %}">
                     <i class="bi bi-folder"></i>
                     {{ folder.name }}
                 </a>
@@ -26,8 +45,10 @@
         {% endfor %}
         {% for wiki in wikis %}
             <li class="list-group-item">
-                <i class="bi bi-file-text"></i>
-                {{ wiki.title }}
+                <a href="{% url 'wiki page' wiki.id %}">
+                    <i class="bi bi-file-text"></i>
+                    {{ wiki.title }}
+                </a>
             </li>
         {% endfor %}
     </ul>

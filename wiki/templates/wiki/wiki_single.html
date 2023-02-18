@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
+    <h1>
+        <a href="{% url 'wiki home' %}">
+            <i class="bi bi-newspaper"></i>
+            Wiki
+        </a>
+    </h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <form action="{% url 'wiki search' %}" method="get">
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" name="search" placeholder="Search" aria-label="Search">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </div>
+            </form>
+        </div>
+      <div class="col-md-8"></div>
+    </div>
+
+    <br><br>
+
+    <h2>
+        {{ wiki.title }}
+    </h2>
+
+    <p>
+        {{ wiki.content }}
+    </p>
+
+{% endblock %}
