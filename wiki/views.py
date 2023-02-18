@@ -5,15 +5,6 @@ from django.urls import reverse
 
 from .models import WikiContent, WikiFolder
 
-def my_view(request):
-    context = {}
-    return render(request, 'wiki/index.html', context)
-
-
-def other_page(request):
-    context = {}
-    return render(request, 'wiki/other.html', context)
-
 def wiki_home(request):
     wiki_folders = WikiFolder.objects.filter(folder_id = 0)
     wikis = WikiContent.objects.filter(folder_id = 0)
@@ -65,3 +56,23 @@ def wiki_update(request, wiki_id):
     wiki.content = request.POST['content']
     wiki.save()
     return HttpResponseRedirect(reverse('wiki page', args=(wiki.id,)))
+
+def wiki_create(request):
+    context = {}
+    return render(request, 'wiki/wiki_create.html', context)
+
+def wiki_insert(request):
+    wiki = WikiContent(
+        title=request.POST['title'], 
+        content=request.POST['content'],
+        folder_id=0,
+        created_by=0,
+        updated_by=0
+    )
+    wiki.save()
+    return HttpResponseRedirect(reverse('wiki home'))
+
+def wiki_delete(request, wiki_id):
+    wiki = get_object_or_404(WikiContent, pk=wiki_id)
+    wiki.delete()
+    return HttpResponseRedirect(reverse('wiki home'))

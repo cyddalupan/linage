@@ -11,21 +11,17 @@
     </h1>
 
     <br><br>
-    <form action="{% url 'wiki update' wiki.id %}" method="post">
+    <form action="{% url 'wiki insert' %}" method="post">
         {% csrf_token %}
         <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" value="{{ wiki.title }}" placeholder="Title">
+            <input type="text" class="form-control" name="title" placeholder="Title">
         </div>
         <div class="mb-3">
             <label class="form-label">Content</label>
-            <textarea class="form-control" name="content" rows="10">{{ wiki.content }}</textarea>
+            <textarea class="form-control" name="content" rows="10"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-
-    <a class="btn btn-danger" href="{% url 'wiki delete' wiki.id %}" role="button">
-        Delete
-    </a>
 
 {% endblock %}

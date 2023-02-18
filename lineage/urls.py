@@ -18,15 +18,17 @@ from django.urls import path
 from wiki import views
 
 urlpatterns = [
+    # Admin
+    path('admin/', admin.site.urls),
+
     # WIKI
     path('wiki-home/', views.wiki_home, name='wiki home'),
     path('wiki-folder/<int:folder_id>/', views.wiki_folder, name='wiki folder'),
     path('wiki-search/', views.wiki_search, name='wiki search'),
-    path('wiki-page/<int:wiki_id>', views.wiki_page, name='wiki page'),
-    path('wiki-edit/<int:wiki_id>', views.wiki_edit, name='wiki edit'),
-    path('wiki-update/<int:wiki_id>', views.wiki_update, name='wiki update'),
-
-    path('hello/', views.my_view, name='hello'),
-    path('other/', views.other_page, name='other'),
-    path('admin/', admin.site.urls),
+    path('wiki-edit/<int:wiki_id>/', views.wiki_edit, name='wiki edit'),
+    path('wiki-page/<int:wiki_id>/', views.wiki_page, name='wiki page'),
+    path('wiki-update/<int:wiki_id>/', views.wiki_update, name='wiki update'),
+    path('wiki-create/', views.wiki_create, name='wiki create'),
+    path('wiki-insert/', views.wiki_insert, name='wiki insert'),
+    path('wiki-delete/<int:wiki_id>/', views.wiki_delete, name='wiki delete'),
 ]
