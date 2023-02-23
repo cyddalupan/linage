@@ -11,31 +11,27 @@
     </h1>
 
     <br><br>
-    <form action="{% url 'wiki update' wiki.id %}" method="post">
+    <form action="{% url 'folder insert' %}" method="post">
         {% csrf_token %}
         <div class="mb-3">
             <label class="form-label">Folder</label>
             <select class="form-select" name="folder" aria-label="Default select example">
                 <option value="0">Root Folder</option>
                 {% for folder in wiki_folders %}
-                    <option value="{{ folder.id }}" {% if folder.id == wiki.folder_id %}selected{% endif %}>
+                    <option value="{{ folder.id }}" {% if folder.id == current.folder_id %}selected{% endif %}>
                         {{ folder.name }}
                     </option>
                 {% endfor %}
             </select>
         </div>
         <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" value="{{ wiki.title }}" placeholder="Title">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Content</label>
-            <textarea class="form-control" name="content" rows="10">{{ wiki.content }}</textarea>
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" name="name" value="{{ current.name }}" placeholder="Name">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 
-    <a class="btn btn-danger" href="{% url 'wiki delete' wiki.id %}" role="button">
+    <a class="btn btn-danger" href="{% url 'folder delete' current.id %}" role="button">
         Delete
     </a>
 

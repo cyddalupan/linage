@@ -28,7 +28,12 @@ urlpatterns = [
     path('wiki-edit/<int:wiki_id>/', views.wiki_edit, name='wiki edit'),
     path('wiki-page/<int:wiki_id>/', views.wiki_page, name='wiki page'),
     path('wiki-update/<int:wiki_id>/', views.wiki_update, name='wiki update'),
-    path('wiki-create/', views.wiki_create, name='wiki create'),
+    path('wiki-create/<int:folder_id>/', views.wiki_create, name='wiki create'),
     path('wiki-insert/', views.wiki_insert, name='wiki insert'),
     path('wiki-delete/<int:wiki_id>/', views.wiki_delete, name='wiki delete'),
+    path('folder-create/<int:folder_id>', views.folder_create, name="folder create"),
+    path('folder-insert', views.folder_insert, name="folder insert"),
+    path('folder-edit/<int:folder_id>', views.folder_edit, name='folder edit'),
+    path('folder-update/<int:folder_id>', views.folder_update, name='folder update'),
+    path('folder-delete/<int:folder_id>', views.folder_delete, name='folder delete')
 ]

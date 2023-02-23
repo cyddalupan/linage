@@ -16,9 +16,29 @@
         </figcaption>
     </p>
     </br>
-    <a class="btn btn-primary" href="{% url 'wiki create' %}" role="button">
-        Create Wiki
-    </a>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill"></i> 
+                <div style="padding-left: 10px">
+                    {{ message }}
+                </div>
+            </div>
+            </br>
+        {% endfor %}
+    {% endif %}
+    <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Options
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'wiki create' folder_id %}">Create new Wiki</a></li>
+            <li><a class="dropdown-item" href="{% url 'folder create' folder_id %}">Create new Folder</a></li>
+            {% if folder_id != 0 %}
+                <li><a class="dropdown-item" href="{% url 'folder edit' folder_id %}">Edit Current Folder</a></li>
+            {% endif %}
+        </ul>
+    </div>
     </br>
     <div class="row">
         <div class="col-md-4">
