@@ -27,13 +27,16 @@ def wiki_folder(request, folder_id):
         folder =  WikiFolder.objects.get(id=loop_folder_id)
         loop_folder_id = folder.folder_id
         trail[folder.id] = folder.name
+        print(trail)
         if folder.folder_id == 0:
             break
+    print(trail)
 
     context = {
         'wiki_folders': wiki_folders,
         'wikis': wikis,
-        'folder_id': folder_id
+        'folder_id': folder_id,
+        'trail': trail,
     }
     return render(request, 'wiki/wiki_home.html', context)
 

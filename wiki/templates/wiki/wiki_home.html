@@ -27,19 +27,30 @@
             </br>
         {% endfor %}
     {% endif %}
-    <div class="dropdown">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            Options
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'wiki create' folder_id %}">Create new Wiki</a></li>
-            <li><a class="dropdown-item" href="{% url 'folder create' folder_id %}">Create new Folder</a></li>
-            {% if folder_id != 0 %}
-                <li><a class="dropdown-item" href="{% url 'folder edit' folder_id %}">Edit Current Folder</a></li>
-            {% endif %}
-        </ul>
-    </div>
-    </br>
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb text-bg-light p-3">
+            <li class="breadcrumb-item">
+                {% if trail|length == 0 %}
+                    <span class="text-secondary">Home</span>
+                {% else %}
+                    <a href="{% url 'wiki home' %}">Home</a>
+                {% endif %}
+            </li>
+            {% for key,value in trail.items reversed %}
+                <li class="breadcrumb-item">
+                    {% if forloop.last %}
+                        <span class="text-secondary">{{value }}</span>
+                    {% else %}
+                        <a href="{% url 'wiki folder' key %}">
+                            {{value }}
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    </nav>
+
     <div class="row">
         <div class="col-md-4">
             <form action="{% url 'wiki search' %}" method="get">
@@ -53,6 +64,20 @@
             </form>
         </div>
       <div class="col-md-8"></div>
+    </div>
+
+    <br/>
+    <div class="dropdown">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            Options
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'wiki create' folder_id %}">Create new Wiki</a></li>
+            <li><a class="dropdown-item" href="{% url 'folder create' folder_id %}">Create new Folder</a></li>
+            {% if folder_id != 0 %}
+                <li><a class="dropdown-item" href="{% url 'folder edit' folder_id %}">Edit Current Folder</a></li>
+            {% endif %}
+        </ul>
     </div>
 
     {% for folder in wiki_folders %}
