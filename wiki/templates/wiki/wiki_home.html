@@ -80,11 +80,11 @@
         </ul>
     </div>
 
+    <div class="clearfix"></div>
     {% for folder in wiki_folders %}
-        <br>
-        <div class="card">
+        <div class="card float-md-start m-2">
             <div class="card-body">
-                <a href="{% url 'wiki folder' folder.id %}">
+                <a href="{% url 'wiki folder' folder.id %}" class="text-decoration-none">
                     <i class="bi bi-folder"></i>
                     {{ folder.name }}
                 </a>
@@ -92,16 +92,16 @@
         </div>
     {% endfor %}
     {% for wiki in wikis %}
-        <br>
-        <div class="card">
+        <div class="card float-md-start m-2">
             <div class="card-body">
-                <a href="{% url 'wiki page' wiki.id %}">
+                <a href="{% url 'wiki page' wiki.id %}" class="text-decoration-none">
                     <i class="bi bi-file-text"></i>
                     {{ wiki.title }}
                 </a>
             </div>
         </div>
     {% endfor %}
+    <div class="clearfix"></div>
 
 
 {% endblock %}
