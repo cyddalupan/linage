@@ -19,6 +19,17 @@ def wiki_home(request):
 def wiki_folder(request, folder_id):
     wiki_folders = WikiFolder.objects.filter(folder_id = folder_id)
     wikis = WikiContent.objects.filter(folder_id = folder_id)
+
+    trail = {};
+    loop_folder_id = folder_id
+    # Get Trail
+    while True: 
+        folder =  WikiFolder.objects.get(id=loop_folder_id)
+        loop_folder_id = folder.folder_id
+        trail[folder.id] = folder.name
+        if folder.folder_id == 0:
+            break
+
     context = {
         'wiki_folders': wiki_folders,
         'wikis': wikis,
