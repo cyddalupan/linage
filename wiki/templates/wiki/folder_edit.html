@@ -9,8 +9,15 @@
             Wiki
         </a>
     </h1>
-
     <br><br>
+
+    <div class="text-bg-light p-3">
+        <a href="{% url 'wiki folder' current.folder_id %}">
+            Back
+        </a>
+    </div>
+    <br><br>
+
     <form action="{% url 'folder insert' %}" method="post">
         {% csrf_token %}
         <div class="mb-3">
