@@ -95,7 +95,7 @@ def wiki_insert(request):
         updated_by=0
     )
     wiki.save()
-    return HttpResponseRedirect(reverse('wiki home'))
+    return HttpResponseRedirect(reverse('wiki folder', args=[request.POST['folder']] ))
 
 def wiki_delete(request, wiki_id):
     wiki = get_object_or_404(WikiContent, pk=wiki_id)
