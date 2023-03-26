@@ -17,6 +17,8 @@ def wiki_home(request):
     return render(request, 'wiki/wiki_home.html', context)
 
 def wiki_folder(request, folder_id):
+    if folder_id == 0:
+        return HttpResponseRedirect(reverse('wiki home'))
     wiki_folders = WikiFolder.objects.filter(folder_id = folder_id)
     wikis = WikiContent.objects.filter(folder_id = folder_id)
 
