@@ -3,10 +3,16 @@
 {% block title %}Sign Up{% endblock %}
 
 {% block content %}
-  <h2>Sign up</h2>
+  {% if user.is_authenticated %}
+  <h2>Create New User</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit">Sign Up</button>
+    <button type="submit">Create</button>
   </form>
+  {% else %}
+  <h1>
+    New members can only be created by existing members.
+  </h1>
+  {% endif %}
 {% endblock %}
