@@ -3,12 +3,20 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-  Hi {{ user.username }}!
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
-  <p><a href="{% url 'password_reset' %}">Reset Password</a></p>
-{% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a>
-{% endif %}
+{% load static %}
+
+<div class="text-center">
+  <img class="logo" src="{% static 'lineage/logo-white.png' %}" alt="My Logo">
+  <p>Stay organized and connected with the past, present, and future.</p>
+  <br><br>
+  {% if user.is_authenticated %}
+    Hi {{ user.username }}!
+    <p><a href="{% url 'logout' %}">Log Out</a></p>
+    <p><a href="{% url 'password_reset' %}">Reset Password</a></p>
+  {% else %}
+    <h1>You are not logged in</h1>
+    <a href="{% url 'login' %}">Log In</a>
+  {% endif %}
+</div>
+
 {% endblock %}
