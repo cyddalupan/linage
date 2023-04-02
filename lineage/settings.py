@@ -39,8 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Created
-    'wiki.apps.WikiConfig',
     "accounts",
+    'wiki.apps.WikiConfig',
+    'setting.apps.SettingConfig',
 ]
 
 MIDDLEWARE = [
