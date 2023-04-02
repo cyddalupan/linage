@@ -31,4 +31,7 @@ urlpatterns = [
 
     # WIKI
     path("wiki/", include("wiki.urls")),
+
+    # Setting
+    path("setting/", include("setting.urls")),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

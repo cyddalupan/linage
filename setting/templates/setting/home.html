@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form>
+  <fieldset disabled>
+    <legend>Settings</legend>
+    <div class="mb-3">
+      <label for="disabledTextInput" class="form-label">Full Name</label>
+      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ user_setting.firstname }} {{ user_setting.middlename }} {{ user_setting.lastname }}">
+    </div>
+    <div class="mb-3">
+      <label for="disabledTextInput" class="form-label">Birthday</label>
+      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ user_setting.birthday }}">
+    </div>
+    <div class="mb-3">
+      <label for="disabledTextInput" class="form-label">Parent</label>
+      <input type="text" id="disabledTextInput" class="form-control" placeholder="{{ parentname }}">
+    </div>
+  </fieldset>
+</form>
+<p><a href="{% url 'signup' %}">Create new user</a></p>
+<p><a href="{% url 'password_reset' %}">Reset Password</a></p>
+<p><a href="{% url 'logout' %}">Log Out</a></p>
+{% endblock %}

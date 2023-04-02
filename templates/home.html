@@ -10,7 +10,7 @@
   <p>Stay organized and connected with the past, present, and future.</p>
   <br><br>
   {% if user.is_authenticated %}
-    Hi {{ user.username }}!
+    Hi {{ user.username }}! {{ user.id }}
     <p><a href="{% url 'signup' %}">Create new user</a></p>
     <p><a href="{% url 'password_reset' %}">Reset Password</a></p>
     <p><a href="{% url 'logout' %}">Log Out</a></p>
