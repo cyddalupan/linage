@@ -1,3 +1,4 @@
+from django.forms import modelform_factory, modelformset_factory
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
 from django.db.models import Q
@@ -5,7 +6,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import WikiContent, WikiFolder
+from .models import WikiContent, WikiFolder, WikiFolderForm
 
 @login_required(login_url='/')
 def wiki_home(request):
@@ -117,18 +118,12 @@ def wiki_delete(request, wiki_id):
 @login_required(login_url='/')
 def folder_create(request, folder_id):
     wiki_folders = WikiFolder.objects.all()
-    context = {
-        'wiki_folders':wiki_folders,
-        'folder_id':folder_id,
-    }
-    return render(request, 'wiki/folder_create.html', context)
+    formset = WikiFolderForm()
 
-@login_required(login_url='/')
-def folder_create(request, folder_id):
-    wiki_folders = WikiFolder.objects.all()
     context = {
         'wiki_folders':wiki_folders,
         'folder_id':folder_id,
+        "formset": formset,
     }
     return render(request, 'wiki/folder_create.html', context)
 
@@ -147,6 +142,11 @@ def folder_insert(request):
 def folder_edit(request, folder_id):
     folder = get_object_or_404(WikiFolder, pk=folder_id)
     wiki_folders = WikiFolder.objects.all()
+
+    # test data
+    folder = WikiFolder.objects.get(pk=1)
+    form = WikiFolderForm(instance=folder)
+
     context = {
         'wiki_folders':wiki_folders,
         'current':folder
