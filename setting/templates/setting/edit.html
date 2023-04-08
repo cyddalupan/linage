@@ -21,6 +21,17 @@
       <label for="disabledTextInput" class="form-label">Birthday{{ user_setting.birthday |date:"Y-m-d" }}</label>
       <input type="date" id="disabledTextInput" class="form-control" name="birthday" value="{{ user_setting.birthday | date:"Y-m-d" }}">
     </div>
+    <div class="mb-3">
+      <label class="form-label">Parent</label>
+      <select class="form-select" name="parent">
+          <option value="0">----</option>
+          {% for parent in parents %}
+              <option value="{{ parent.user_id }}" {% if parent.user_id == user_setting.parent_id %}selected{% endif %}>
+                  {{ parent.firstname }} {{ parent.middlename }} {{ parent.lastname }}
+              </option>
+          {% endfor %}
+      </select>
+  </div>
     <button type="submit" class="btn btn-primary">Update</button>
   </fieldset>
 </form>
