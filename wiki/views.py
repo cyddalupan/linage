@@ -33,10 +33,9 @@ def wiki_folder(request, folder_id):
         folder =  WikiFolder.objects.get(id=loop_folder_id)
         loop_folder_id = folder.folder_id
         trail[folder.id] = folder.name
-        print(trail)
+
         if folder.folder_id == 0:
             break
-    print(trail)
 
     context = {
         'wiki_folders': wiki_folders,
@@ -125,7 +124,6 @@ def folder_create(request, folder_id):
             folder.folder_id = folder_id
             folder.created_by = 0
             folder.updated_by = 0
-            folder.clean()
             folder.save()
             return HttpResponseRedirect(reverse('wiki folder', args=[folder.folder_id] ))
     else:
@@ -143,25 +141,28 @@ def folder_create(request, folder_id):
 @login_required(login_url='/')
 def folder_edit(request, folder_id):
     folder = get_object_or_404(WikiFolder, pk=folder_id)
-    wiki_folders = WikiFolder.objects.all()
+    
+    if request.method == 'POST':
+        formset = WikiFolderForm(request.POST, instance=folder)
+        if formset.is_valid():
+            folder = formset.save(commit=False)
+            folder_id:int = int(request.POST['folder'])
+            folder.folder_id = folder_id
+            folder.created_by = 0
+            folder.updated_by = 0
+            folder.save()
+            return HttpResponseRedirect(reverse('wiki folder', args=[folder.folder_id] ))
+    else:
+        formset = WikiFolderForm(instance=folder)
 
-    # test data
-    folder = WikiFolder.objects.get(pk=1)
-    form = WikiFolderForm(instance=folder)
+    wiki_folders = WikiFolder.objects.all()
 
     context = {
         'wiki_folders':wiki_folders,
-        'current':folder
+        'current':folder,
+        "formset": formset,
     }
     return render(request, 'wiki/folder_edit.html', context)
-
-@login_required(login_url='/')
-def folder_update(request, folder_id):
-    folder = get_object_or_404(WikiFolder, pk=folder_id)
-    folder.name = request.POST['name']
-    folder.folder_id = request.POST['folder']
-    folder.save()
-    return HttpResponseRedirect(reverse('wiki folder', args=[request.POST['folder']]))
 
 @login_required(login_url='/')
 def folder_delete(request, folder_id):
