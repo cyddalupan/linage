@@ -13,7 +13,6 @@ urlpatterns = [
     path('insert/', views.wiki_insert, name='wiki insert'),
     path('delete/<int:wiki_id>/', views.wiki_delete, name='wiki delete'),
     path('folder-create/<int:folder_id>', views.folder_create, name="folder create"),
-    path('folder-insert', views.folder_insert, name="folder insert"),
     path('folder-edit/<int:folder_id>', views.folder_edit, name='folder edit'),
     path('folder-update/<int:folder_id>', views.folder_update, name='folder update'),
     path('folder-delete/<int:folder_id>', views.folder_delete, name='folder delete')

@@ -117,8 +117,21 @@ def wiki_delete(request, wiki_id):
 
 @login_required(login_url='/')
 def folder_create(request, folder_id):
+    if request.method == 'POST':
+        formset = WikiFolderForm(request.POST)
+        if formset.is_valid():
+            folder = formset.save(commit=False)
+            folder_id:int = int(request.POST['folder'])
+            folder.folder_id = folder_id
+            folder.created_by = 0
+            folder.updated_by = 0
+            folder.clean()
+            folder.save()
+            return HttpResponseRedirect(reverse('wiki folder', args=[folder.folder_id] ))
+    else:
+        formset = WikiFolderForm()
+
     wiki_folders = WikiFolder.objects.all()
-    formset = WikiFolderForm()
 
     context = {
         'wiki_folders':wiki_folders,
@@ -126,17 +139,6 @@ def folder_create(request, folder_id):
         "formset": formset,
     }
     return render(request, 'wiki/folder_create.html', context)
-
-@login_required(login_url='/')
-def folder_insert(request):
-    folder = WikiFolder(
-        name=request.POST['name'],
-        folder_id=request.POST['folder'],
-        created_by=0,
-        updated_by=0
-    )
-    folder.save()
-    return HttpResponseRedirect(reverse('wiki folder', args=[request.POST['folder']] ))
 
 @login_required(login_url='/')
 def folder_edit(request, folder_id):
