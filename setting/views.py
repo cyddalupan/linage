@@ -31,7 +31,6 @@ def new(request):
     setting = Setting(
         user_id=current_user.id,
         parent_id=0,
-        birthday=date.today()
     )
     setting.save()
     return HttpResponseRedirect(reverse('setting-home'))
