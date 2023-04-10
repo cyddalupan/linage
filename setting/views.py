@@ -1,10 +1,11 @@
+from datetime import date
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
-from .models import Setting
+from .models import Setting, SettingForm
 
 @login_required(login_url='/')
 def home(request):
@@ -29,7 +30,8 @@ def new(request):
     current_user = request.user
     setting = Setting(
         user_id=current_user.id,
-        parent_id=0
+        parent_id=0,
+        birthday=date.today()
     )
     setting.save()
     return HttpResponseRedirect(reverse('setting-home'))
@@ -39,14 +41,22 @@ def edit(request):
     current_user = request.user
     parents = Setting.objects.filter(~Q(user_id = current_user.id))
     user_setting = Setting.objects.get(user_id=current_user.id)
-    parentname = "avatar"
-    if user_setting.parent_id != 0:
-        parent = Setting.objects.get(id=user_setting.parent_id)
-        parentname = parent.firstname + " " + parent.middlename + " " + parent.lastname
+    
+    if request.method == 'POST':
+        formset = SettingForm(request.POST, instance=user_setting)
+        if formset.is_valid():
+            setting = formset.save(commit=False)
+            parent_id:int = int(request.POST['parent'])
+            setting.parent_id = parent_id
+            setting.save()
+            return HttpResponseRedirect(reverse('setting-home'))
+    else:
+        formset = SettingForm(instance=user_setting)
+    
     context = {
         'parents': parents,
         'user_setting': user_setting,
-        'parentname': parentname,
+        'formset': formset
     }
     return render(request, 'setting/edit.html', context)
 

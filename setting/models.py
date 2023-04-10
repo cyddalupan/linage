@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 
 class Setting(models.Model):
   user_id = models.IntegerField()
@@ -10,3 +11,9 @@ class Setting(models.Model):
 
   def __str__(self):
     return self.firstname + " " + self.middlename + " " + self.lastname
+
+
+class SettingForm(ModelForm):
+    class Meta:
+        model = Setting
+        fields = ["firstname", "middlename", "lastname", "birthday"]

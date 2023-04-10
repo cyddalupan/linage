@@ -1,26 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<form action="{% url 'setting-update' user_setting.id %}" method="post">
-  {% csrf_token %}
-  <fieldset>
-    <legend>Settings</legend>
-    <div class="mb-3">
-      <label for="disabledTextInput" class="form-label">First Name</label>
-      <input type="text" id="disabledTextInput" class="form-control" name="firstname" value="{{ user_setting.firstname }}">
-    </div>
-    <div class="mb-3">
-      <label for="disabledTextInput" class="form-label">Middle Name</label>
-      <input type="text" id="disabledTextInput" class="form-control" name="middlename" value="{{ user_setting.middlename }}">
-    </div>
-    <div class="mb-3">
-      <label for="disabledTextInput" class="form-label">Last Name</label>
-      <input type="text" id="disabledTextInput" class="form-control" name="lastname" value="{{ user_setting.lastname }}">
-    </div>
-    <div class="mb-3">
-      <label for="disabledTextInput" class="form-label">Birthday{{ user_setting.birthday |date:"Y-m-d" }}</label>
-      <input type="date" id="disabledTextInput" class="form-control" name="birthday" value="{{ user_setting.birthday | date:"Y-m-d" }}">
-    </div>
+  {% load crispy_forms_tags %}
+
+  <form action="{% url 'setting-edit' %}" method="post">
+    {% csrf_token %}
+    {{ formset|crispy }}
     <div class="mb-3">
       <label class="form-label">Parent</label>
       <select class="form-select" name="parent">
@@ -31,8 +16,7 @@
               </option>
           {% endfor %}
       </select>
-  </div>
+    </div>
     <button type="submit" class="btn btn-primary">Update</button>
-  </fieldset>
-</form>
+  </form>  
 {% endblock %}
