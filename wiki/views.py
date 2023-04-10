@@ -1,3 +1,4 @@
+from datetime import date
 from django.forms import modelform_factory, modelformset_factory
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
@@ -70,11 +71,14 @@ def wiki_page(request, wiki_id):
 
 @login_required(login_url='/')
 def wiki_edit(request, wiki_id):
+    current_user = request.user
     wiki = get_object_or_404(WikiContent, pk=wiki_id)
     if request.method == 'POST':
         formset = WikiContentForm(request.POST, instance=wiki)
         if formset.is_valid():
             wiki = formset.save(commit=False)
+            wiki.updated_by = current_user.id
+            wiki.updated_at = date.today()
             wiki.save()
             return HttpResponseRedirect(reverse('wiki page', args=(wiki.id,)))
     else:
@@ -89,12 +93,13 @@ def wiki_edit(request, wiki_id):
 
 @login_required(login_url='/')
 def wiki_create(request, folder_id):
+    current_user = request.user
     if request.method == 'POST':
         formset = WikiContentForm(request.POST)
         if formset.is_valid():
             wiki = formset.save(commit=False)
-            wiki.created_by = 0
-            wiki.updated_by = 0
+            wiki.created_by = current_user.id
+            wiki.updated_by = current_user.id
             wiki.save()
             return HttpResponseRedirect(reverse('wiki folder', args=[wiki.folder.id] ))
     else:
@@ -115,14 +120,15 @@ def wiki_delete(request, wiki_id):
 
 @login_required(login_url='/')
 def folder_create(request, folder_id):
+    current_user = request.user
     if request.method == 'POST':
         formset = WikiFolderForm(request.POST)
         if formset.is_valid():
             folder = formset.save(commit=False)
             folder_id:int = int(request.POST['folder'])
             folder.folder_id = folder_id
-            folder.created_by = 0
-            folder.updated_by = 0
+            folder.created_by = current_user.id
+            folder.updated_by = current_user.id
             folder.save()
             return HttpResponseRedirect(reverse('wiki folder', args=[folder.folder_id] ))
     else:
@@ -139,6 +145,7 @@ def folder_create(request, folder_id):
 
 @login_required(login_url='/')
 def folder_edit(request, folder_id):
+    current_user = request.user
     folder = get_object_or_404(WikiFolder, pk=folder_id)
     
     if request.method == 'POST':
@@ -147,8 +154,8 @@ def folder_edit(request, folder_id):
             folder = formset.save(commit=False)
             folder_id:int = int(request.POST['folder'])
             folder.folder_id = folder_id
-            folder.created_by = 0
-            folder.updated_by = 0
+            folder.updated_by = current_user.id
+            folder.updated_at = date.today()
             folder.save()
             return HttpResponseRedirect(reverse('wiki folder', args=[folder.folder_id] ))
     else:
