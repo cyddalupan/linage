@@ -2,6 +2,7 @@
 
 {% block content %}
     {% load static %}
+    {% load crispy_forms_tags %}
     <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
     <h1>
         <a class="header-link"  href="{% url 'wiki home' %}">
@@ -18,32 +19,19 @@
     </div>
     <br><br>
 
-    <form action="{% url 'wiki update' wiki.id %}" method="post">
+    <form action="{% url 'wiki edit' wiki.id %}" method="post">
         {% csrf_token %}
-        <div class="mb-3">
-            <label class="form-label">Folder</label>
-            <select class="form-select" name="folder">
-                <option value="0">Root Folder</option>
-                {% for folder in wiki_folders %}
-                    <option value="{{ folder.id }}" {% if folder.id == wiki.folder_id %}selected{% endif %}>
-                        {{ folder.name }}
-                    </option>
-                {% endfor %}
-            </select>
+        {{ formset|crispy }}
+        <div class="row justify-content-between">
+            <div class="col-1 d-grid">
+                <a class="btn btn-danger" href="{% url 'wiki delete' wiki.id %}" role="button">
+                    Delete
+                </a>
+            </div>
+            <div class="col-1 d-grid">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" value="{{ wiki.title }}" placeholder="Title">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Content</label>
-            <textarea class="form-control" name="content" rows="10">{{ wiki.content }}</textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-
-    <a class="btn btn-danger" href="{% url 'wiki delete' wiki.id %}" role="button">
-        Delete
-    </a>
+    </form>    
 
 {% endblock %}

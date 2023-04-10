@@ -2,6 +2,7 @@
 
 {% block content %}
     {% load static %}
+    {% load crispy_forms_tags %}
     <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
     <h1>
         <a class="header-link"  href="{% url 'wiki home' %}">
@@ -18,27 +19,9 @@
     </div>
     <br><br>
 
-    <form action="{% url 'wiki insert' %}" method="post">
+    <form action="{% url 'wiki create' folder_id %}" method="post">
         {% csrf_token %}
-        <div class="mb-3">
-            <label class="form-label">Folder</label>
-            <select class="form-select" name="folder" aria-label="Default select example">
-                <option value="0">Root Folder</option>
-                {% for folder in wiki_folders %}
-                    <option value="{{ folder.id }}" {% if folder.id == folder_id %}selected{% endif %}>
-                        {{ folder.name }}
-                    </option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" placeholder="Title">
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Content</label>
-            <textarea class="form-control" name="content" rows="10"></textarea>
-        </div>
+        {{ formset|crispy }}
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 

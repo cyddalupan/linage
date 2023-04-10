@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 
-from .models import WikiContent, WikiFolder, WikiFolderForm
+from .models import WikiContent, WikiContentForm, WikiFolder, WikiFolderForm
 
 @login_required(login_url='/')
 def wiki_home(request):
@@ -70,43 +70,42 @@ def wiki_page(request, wiki_id):
 
 @login_required(login_url='/')
 def wiki_edit(request, wiki_id):
-    wiki = WikiContent.objects.get(pk=wiki_id)
+    wiki = get_object_or_404(WikiContent, pk=wiki_id)
+    if request.method == 'POST':
+        formset = WikiContentForm(request.POST, instance=wiki)
+        if formset.is_valid():
+            wiki = formset.save(commit=False)
+            wiki.save()
+            return HttpResponseRedirect(reverse('wiki page', args=(wiki.id,)))
+    else:
+        formset = WikiContentForm(instance=wiki)
     wiki_folders = WikiFolder.objects.all()
     context = {
         'wiki': wiki,
-        'wiki_folders':wiki_folders
+        'wiki_folders':wiki_folders,
+        'formset': formset
     }
     return render(request, 'wiki/wiki_edit.html', context)
 
 @login_required(login_url='/')
-def wiki_update(request, wiki_id):
-    wiki = get_object_or_404(WikiContent, pk=wiki_id)
-    wiki.title = request.POST['title']
-    wiki.content = request.POST['content']
-    wiki.folder_id = request.POST['folder']
-    wiki.save()
-    return HttpResponseRedirect(reverse('wiki page', args=(wiki.id,)))
-
-@login_required(login_url='/')
 def wiki_create(request, folder_id):
+    if request.method == 'POST':
+        formset = WikiContentForm(request.POST)
+        if formset.is_valid():
+            wiki = formset.save(commit=False)
+            wiki.created_by = 0
+            wiki.updated_by = 0
+            wiki.save()
+            return HttpResponseRedirect(reverse('wiki folder', args=[wiki.folder.id] ))
+    else:
+        formset = WikiContentForm(initial={'folder': folder_id})
     wiki_folders = WikiFolder.objects.all()
     context = {
-        'wiki_folders':wiki_folders,
-        'folder_id':folder_id,
+        'wiki_folders' : wiki_folders,
+        'folder_id' : folder_id,
+        'formset' : formset,
     }
     return render(request, 'wiki/wiki_create.html', context)
-
-@login_required(login_url='/')
-def wiki_insert(request):
-    wiki = WikiContent(
-        title=request.POST['title'], 
-        content=request.POST['content'],
-        folder_id=request.POST['folder'],
-        created_by=0,
-        updated_by=0
-    )
-    wiki.save()
-    return HttpResponseRedirect(reverse('wiki folder', args=[request.POST['folder']] ))
 
 @login_required(login_url='/')
 def wiki_delete(request, wiki_id):
