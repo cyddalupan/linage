@@ -1,5 +1,6 @@
 from django.db import models
-from django.forms import ModelForm
+from django.forms import DateField, DateInput, ModelForm
+from django import forms
 
 class Setting(models.Model):
   user_id = models.IntegerField()
@@ -17,3 +18,6 @@ class SettingForm(ModelForm):
     class Meta:
         model = Setting
         fields = ["firstname", "middlename", "lastname", "birthday"]
+        widgets = {
+            'birthday': DateInput(attrs={'type': 'date'})
+        }
