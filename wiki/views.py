@@ -54,10 +54,12 @@ def wiki_search(request):
         Q(title__icontains=query.lower()) |
         Q(content__icontains=query.lower())
     )
+    trail = {"0": "Search"};
     context = {
         'wiki_folders': wiki_folders,
         'wikis': wikis,
-        'folder_id': 0
+        'folder_id': 0,
+        'trail': trail,
     }
     return render(request, 'wiki/wiki_home.html', context)
 
