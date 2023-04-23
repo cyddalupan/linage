@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 
 from .models import WikiContent, WikiContentForm, WikiFolder, WikiFolderForm
 
@@ -184,3 +185,10 @@ def folder_delete(request, folder_id):
         return HttpResponseRedirect(reverse('wiki folder', args=[parent_folder_id]))
     messages.error(request, 'You can only delete an empty folder')
     return HttpResponseRedirect(reverse('wiki folder', args=[folder_id]))
+
+def send_email(request):
+    subject = 'Test email'
+    message = 'This is a test email'
+    email_from = 'lineage.theloop@gmail.com'
+    recipient_list = ['cydmdalupan@gmail.com']
+    send_mail(subject, message, email_from, recipient_list, fail_silently=False)
