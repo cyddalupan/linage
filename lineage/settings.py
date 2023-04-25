@@ -126,12 +126,8 @@ LOGOUT_REDIRECT_URL = "/"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-# STATIC_URL = '/static/'
-# STATIC_ROOT = 'staticfiles'
-# STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, "static"),
-# )
-STATIC_URL = '/staticfiles/'
+#STATIC_URL = '/staticfiles/'
+ 
 STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
 STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))]
 
@@ -142,6 +138,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+# Email
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -149,7 +146,14 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'lineage.theloop@gmail.com'
 EMAIL_HOST_PASSWORD = 'jordgxchiwmfogxj'
 
+# Account Configs
+LOGIN_REDIRECT_URL = "wiki home"
+LOGOUT_REDIRECT_URL = "home"
+
 # Codespace
+STATIC_URL = '/proxy/8081/staticfiles/'
+SECURE_SSL_REDIRECT = False
 
 #FORCE_SCRIPT_NAME = 'https://cyd.cadavonahomelab.com/proxy/8000'
-#CSRF_TRUSTED_ORIGINS = ['https://cyd.cadavonahomelab.com']
+CSRF_TRUSTED_ORIGINS = ['https://cyd.cadavonahomelab.com']
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
