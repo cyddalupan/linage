@@ -1,5 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
+from django.contrib.auth.models import User
 
 class WikiFolder(models.Model):
     name = models.CharField(unique=True, max_length=255)
@@ -21,6 +22,7 @@ class WikiContent(models.Model):
     title = models.CharField(unique=True, max_length=255)
     content = models.TextField()    
     folder = models.ForeignKey(WikiFolder, on_delete=models.CASCADE, null=True)
+    is_updating = models.BooleanField(default=False)
     created_by = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_by = models.IntegerField()
@@ -43,6 +45,9 @@ class WikiContentArchive(models.Model):
     title = models.CharField(unique=True, max_length=255)
     content = models.TextField()    
     folder = models.ForeignKey(WikiFolder, on_delete=models.CASCADE, null=True)
+    approver1_id = models.IntegerField(default=0)
+    approver2_id = models.IntegerField(default=0)
+    is_approved = models.BooleanField(default=False)
     created_by = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 
