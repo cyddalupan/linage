@@ -11,6 +11,10 @@ from django.core.mail import send_mail
 from .models import WikiContent, WikiContentForm, WikiFolder, WikiFolderForm
 
 @login_required(login_url='/')
+def wiki_approval(request):
+    return render(request, 'wiki/approval.html')
+
+@login_required(login_url='/')
 def wiki_home(request):
     wiki_folders = WikiFolder.objects.filter(folder_id = 0)
     wikis = WikiContent.objects.filter(folder_id = 0)

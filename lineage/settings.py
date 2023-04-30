@@ -147,7 +147,7 @@ EMAIL_HOST_USER = 'lineage.theloop@gmail.com'
 EMAIL_HOST_PASSWORD = 'jordgxchiwmfogxj'
 
 # Account Configs
-LOGIN_REDIRECT_URL = "wiki home"
+LOGIN_REDIRECT_URL = "wiki_approval"
 LOGOUT_REDIRECT_URL = "home"
 
 # Codespace

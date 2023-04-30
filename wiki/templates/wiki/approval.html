@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
+    
+  <h1>
+    For Approval
+  </h1>
+
+  <div class="alert alert-warning d-flex align-items-center justify-content-between" role="alert">
+    <div>
+      <i class="bi bi-exclamation-triangle-fill me-2"></i>
+      An example warning alert with an icon
+    </div>
+    <button type="button" class="btn btn-primary">Review</button>
+  </div>
+  
+{% endblock %}
