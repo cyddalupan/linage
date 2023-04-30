@@ -42,7 +42,7 @@ class WikiContentForm(ModelForm):
         fields = ["title", "content", "folder"]
 
 class WikiContentArchive(models.Model):
-    title = models.CharField(unique=True, max_length=255)
+    title = models.CharField(max_length=255)
     content = models.TextField()    
     folder = models.ForeignKey(WikiFolder, on_delete=models.CASCADE, null=True)
     approver1_id = models.IntegerField(default=0)

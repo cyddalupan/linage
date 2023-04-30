@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 
-from .models import WikiContent, WikiContentForm, WikiFolder, WikiFolderForm
+from .models import WikiContent, WikiContentArchive, WikiContentForm, WikiFolder, WikiFolderForm
 
 @login_required(login_url='/')
 def wiki_approval(request):
@@ -83,10 +83,19 @@ def wiki_edit(request, wiki_id):
     if request.method == 'POST':
         formset = WikiContentForm(request.POST, instance=wiki)
         if formset.is_valid():
-            wiki = formset.save(commit=False)
-            wiki.updated_by = current_user.id
-            wiki.updated_at = date.today()
-            wiki.save()
+            # Content
+            wikiContent = WikiContent.objects.get(pk=wiki_id)
+            wikiContent.is_updating = True
+            wikiContent.save()
+            # Archive
+            folder = WikiFolder.objects.get(pk=request.POST['folder'])
+            archive = WikiContentArchive(
+                title = request.POST['title'],
+                content = request.POST['content'],
+                folder = folder,
+                created_by = current_user.id
+            )
+            archive.save()
             return HttpResponseRedirect(reverse('wiki page', args=(wiki.id,)))
     else:
         formset = WikiContentForm(instance=wiki)
