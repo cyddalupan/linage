@@ -12,7 +12,14 @@ from .models import WikiContent, WikiContentArchive, WikiContentForm, WikiFolder
 
 @login_required(login_url='/')
 def wiki_approval(request):
-    return render(request, 'wiki/approval.html')
+    current_user = request.user
+    archives = WikiContentArchive.objects.filter(is_approved = False)
+    print(archives)
+    context = {
+        'current_user': current_user,
+        'archives': archives,
+    }
+    return render(request, 'wiki/approval.html', context)
 
 @login_required(login_url='/')
 def wiki_home(request):
@@ -94,11 +101,11 @@ def wiki_edit(request, wiki_id):
                 title = request.POST['title'],
                 content = request.POST['content'],
                 folder = folder,
-                status = "edit",
+                status = "Edit",
                 created_by = current_user.id
             )
             archive.save()
-            return HttpResponseRedirect(reverse('wiki page', args=(wiki.id,)))
+            return HttpResponseRedirect(reverse('wiki_approval'))
     else:
         formset = WikiContentForm(instance=wiki)
     wiki_folders = WikiFolder.objects.all()
@@ -120,7 +127,7 @@ def wiki_create(request, folder_id):
                 title = request.POST['title'],
                 content = request.POST['content'],
                 folder = folder,
-                status = "add",
+                status = "Add",
                 created_by = current_user.id
             )
             archive.save()
@@ -145,9 +152,9 @@ def wiki_delete(request, wiki_id):
     #Archive
     archive = WikiContentArchive(
         content_id = wiki_id,
-        title = "for delete",
-        content = "for delete",
-        status = "delete",
+        title = wikiContent.title,
+        content = wikiContent.content,
+        status = "Delete",
         created_by = current_user.id
     )
     archive.save()

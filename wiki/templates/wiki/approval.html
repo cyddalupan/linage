@@ -7,13 +7,25 @@
   <h1>
     For Approval
   </h1>
+  <br><br>
 
+  {% if archives|length == 0 %}
+  <p>
+    Nothing to Approve.
+  </p>
+  {% endif %}
+
+  {% for archive in archives %}
   <div class="alert alert-warning d-flex align-items-center justify-content-between" role="alert">
     <div>
       <i class="bi bi-exclamation-triangle-fill me-2"></i>
-      An example warning alert with an icon
+      {{ archive.status }} {{ archive.title }} 
     </div>
-    <button type="button" class="btn btn-primary">Review</button>
+    
+    {% if current_user.id != archive.created_by %}
+      <button type="button" class="btn btn-primary">Review</button>
+    {% endif %}
   </div>
+  {% endfor %}
   
 {% endblock %}
