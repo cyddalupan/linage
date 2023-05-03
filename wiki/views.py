@@ -14,7 +14,6 @@ from .models import WikiContent, WikiContentArchive, WikiContentForm, WikiFolder
 def wiki_approval(request):
     current_user = request.user
     archives = WikiContentArchive.objects.filter(is_approved = False)
-    print(archives)
     context = {
         'current_user': current_user,
         'archives': archives,
@@ -23,7 +22,15 @@ def wiki_approval(request):
 
 @login_required(login_url='/')
 def wiki_review(request, archive_id):
-    return render(request, 'wiki/review.html')
+    archive = get_object_or_404(WikiContentArchive, pk=archive_id)
+    print(archive)
+    wiki = get_object_or_404(WikiContent, pk=archive.content_id)
+    print(wiki)
+    context = {
+        'archive': archive,
+        'wiki': wiki,
+    }
+    return render(request, 'wiki/review.html', context)
 
 @login_required(login_url='/')
 def wiki_home(request):

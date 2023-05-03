@@ -4,28 +4,33 @@
   {% load static %}
   <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
 
+	<h1>{{ archive.status }} {{ archive.title }}</h1>
+	<br><br>
+
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
-				<h1>
-					Before
-				</h1>
 				<h2>
-					Title
+					Before
 				</h2>
+				<br>
+				<h4>
+					{{ wiki.title }}
+				</h4>
 				<p>
-					Content
+					{{ wiki.content }}
 				</p>
 			</div>
 			<div class="col-md-6">
-				<h1>
-					After
-				</h1>
 				<h2>
-					Title
+					After
 				</h2>
+				<br>
+				<h4>
+					{{ archive.title }}
+				</h4>
 				<p>
-					Content
+					{{ archive.content }}
 				</p>
 			</div>
 		</div>
