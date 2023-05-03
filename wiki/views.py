@@ -90,9 +90,11 @@ def wiki_edit(request, wiki_id):
             # Archive
             folder = WikiFolder.objects.get(pk=request.POST['folder'])
             archive = WikiContentArchive(
+                content_id = wiki_id,
                 title = request.POST['title'],
                 content = request.POST['content'],
                 folder = folder,
+                status = "edit",
                 created_by = current_user.id
             )
             archive.save()
@@ -113,11 +115,16 @@ def wiki_create(request, folder_id):
     if request.method == 'POST':
         formset = WikiContentForm(request.POST)
         if formset.is_valid():
-            wiki = formset.save(commit=False)
-            wiki.created_by = current_user.id
-            wiki.updated_by = current_user.id
-            wiki.save()
-            return HttpResponseRedirect(reverse('wiki folder', args=[wiki.folder.id] ))
+            folder = WikiFolder.objects.get(pk=request.POST['folder'])
+            archive = WikiContentArchive(
+                title = request.POST['title'],
+                content = request.POST['content'],
+                folder = folder,
+                status = "add",
+                created_by = current_user.id
+            )
+            archive.save()
+            return HttpResponseRedirect(reverse('wiki_approval'))
     else:
         formset = WikiContentForm(initial={'folder': folder_id})
     wiki_folders = WikiFolder.objects.all()
@@ -130,9 +137,21 @@ def wiki_create(request, folder_id):
 
 @login_required(login_url='/')
 def wiki_delete(request, wiki_id):
-    wiki = get_object_or_404(WikiContent, pk=wiki_id)
-    wiki.delete()
-    return HttpResponseRedirect(reverse('wiki home'))
+    current_user = request.user
+    # Content
+    wikiContent = WikiContent.objects.get(pk=wiki_id)
+    wikiContent.is_updating = True
+    wikiContent.save()
+    #Archive
+    archive = WikiContentArchive(
+        content_id = wiki_id,
+        title = "for delete",
+        content = "for delete",
+        status = "delete",
+        created_by = current_user.id
+    )
+    archive.save()
+    return HttpResponseRedirect(reverse('wiki_approval'))
 
 @login_required(login_url='/')
 def folder_create(request, folder_id):
