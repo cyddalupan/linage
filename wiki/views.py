@@ -22,7 +22,7 @@ def wiki_approval(request):
     return render(request, 'wiki/approval.html', context)
 
 @login_required(login_url='/')
-def wiki_review(request):
+def wiki_review(request, archive_id):
     return render(request, 'wiki/review.html')
 
 @login_required(login_url='/')

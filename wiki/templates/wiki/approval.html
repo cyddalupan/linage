@@ -23,7 +23,7 @@
     </div>
     
     {% if current_user.id != archive.created_by %}
-      <button type="button" class="btn btn-primary">Review</button>
+      <a type="button" class="btn btn-primary" href="{% url 'wiki_review' archive.id %}">Review</a>
     {% endif %}
   </div>
   {% endfor %}

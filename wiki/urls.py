@@ -4,7 +4,7 @@ from . import views
 
 urlpatterns = [
     path('approval/', views.wiki_approval, name='wiki_approval'),
-    path('review/', views.wiki_review, name='wiki_review'),
+    path('review/<int:archive_id>/', views.wiki_review, name='wiki_review'),
     path('home/', views.wiki_home, name='wiki home'),
     path('folder/<int:folder_id>/', views.wiki_folder, name='wiki folder'),
     path('search/', views.wiki_search, name='wiki search'),
