@@ -22,6 +22,10 @@ def wiki_approval(request):
     return render(request, 'wiki/approval.html', context)
 
 @login_required(login_url='/')
+def wiki_review(request):
+    return render(request, 'wiki/review.html')
+
+@login_required(login_url='/')
 def wiki_home(request):
     wiki_folders = WikiFolder.objects.filter(folder_id = 0)
     wikis = WikiContent.objects.filter(folder_id = 0)

@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<h1>
+					Before
+				</h1>
+				<h2>
+					Title
+				</h2>
+				<p>
+					Content
+				</p>
+			</div>
+			<div class="col-md-6">
+				<h1>
+					After
+				</h1>
+				<h2>
+					Title
+				</h2>
+				<p>
+					Content
+				</p>
+			</div>
+		</div>
+	</div>
+{% endblock %}
