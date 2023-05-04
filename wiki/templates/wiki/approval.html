@@ -22,7 +22,7 @@
       {{ archive.status }} {{ archive.title }} 
     </div>
     
-    {% if current_user.id != archive.created_by %}
+    {% if current_user.id != archive.created_by and current_user.id != archive.approver1_id and current_user.id != archive.approver2_id  %}
       <a type="button" class="btn btn-primary" href="{% url 'wiki_review' archive.id %}">Review</a>
     {% endif %}
   </div>

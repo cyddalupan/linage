@@ -38,7 +38,21 @@ def wiki_accept_review(request, archive_id):
     archive = get_object_or_404(WikiContentArchive, pk=archive_id)
     if archive.approver1_id == 0:
         archive.approver1_id = current_user.id
-    ## TODO Add Condition for second approver and actually do the update
+        archive.save()
+    else:
+        if archive.status == "Add":
+            wiki = WikiContent(
+                title = archive.title,
+                content = archive.content,
+                folder = archive.folder,
+                created_by = archive.created_by,
+                updated_by = archive.created_by,
+            )
+            wiki.save()
+        # Archive Update
+        archive.approver2_id = current_user.id
+        archive.is_approved = True
+        archive.save()
     return HttpResponseRedirect(reverse('wiki_approval'))
 
 
