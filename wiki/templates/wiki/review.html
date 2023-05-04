@@ -14,24 +14,36 @@
 					Before
 				</h2>
 				<br>
+				{% if archive.status == 'Edit' %}
 				<h4>
 					{{ wiki.title }}
 				</h4>
 				<p>
 					{{ wiki.content }}
 				</p>
+				{% elif archive.status == 'Add' %}
+				<h4>
+					Does not exist yet
+				</h4>
+				{% endif %}
 			</div>
 			<div class="col-md-6">
 				<h2>
 					After
 				</h2>
 				<br>
+				{% if archive.status == 'Delete' %}
+				<h4>
+					This will be Deleted
+				</h4>
+				{% else %}
 				<h4>
 					{{ archive.title }}
 				</h4>
 				<p>
 					{{ archive.content }}
 				</p>
+				{% endif %}
 			</div>
 		</div>
 	</div>

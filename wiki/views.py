@@ -23,9 +23,10 @@ def wiki_approval(request):
 @login_required(login_url='/')
 def wiki_review(request, archive_id):
     archive = get_object_or_404(WikiContentArchive, pk=archive_id)
-    print(archive)
-    wiki = get_object_or_404(WikiContent, pk=archive.content_id)
-    print(wiki)
+    wiki = {}
+    if archive.content_id != 0:
+        wiki = get_object_or_404(WikiContent, pk=archive.content_id)
+    
     context = {
         'archive': archive,
         'wiki': wiki,
