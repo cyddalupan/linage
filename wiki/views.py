@@ -33,6 +33,15 @@ def wiki_review(request, archive_id):
     }
     return render(request, 'wiki/review.html', context)
 
+def wiki_accept_review(request, archive_id):
+    current_user = request.user
+    archive = get_object_or_404(WikiContentArchive, pk=archive_id)
+    if archive.approver1_id == 0:
+        archive.approver1_id = current_user.id
+    ## TODO Add Condition for second approver and actually do the update
+    return HttpResponseRedirect(reverse('wiki_approval'))
+
+
 @login_required(login_url='/')
 def wiki_home(request):
     wiki_folders = WikiFolder.objects.filter(folder_id = 0)
