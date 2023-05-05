@@ -58,6 +58,9 @@ def wiki_accept_review(request, archive_id):
             wiki.created_by = archive.created_by
             wiki.updated_by = archive.created_by
             wiki.save()
+        if archive.status == "Delete":
+            wiki = get_object_or_404(WikiContent, pk=archive.content_id)
+            wiki.delete()
         # Archive Update
         archive.approver2_id = current_user.id
         archive.is_approved = True
