@@ -49,6 +49,15 @@ def wiki_accept_review(request, archive_id):
                 updated_by = archive.created_by,
             )
             wiki.save()
+        if archive.status == "Edit":
+            wiki = get_object_or_404(WikiContent, pk=archive.content_id)
+            wiki.title = archive.title
+            wiki.content = archive.content
+            wiki.folder = archive.folder
+            wiki.is_updating = False
+            wiki.created_by = archive.created_by
+            wiki.updated_by = archive.created_by
+            wiki.save()
         # Archive Update
         archive.approver2_id = current_user.id
         archive.is_approved = True
