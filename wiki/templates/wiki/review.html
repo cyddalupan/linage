@@ -49,10 +49,21 @@
 	</div>
 	<div class="row">
 		<div class="col">
-			<a class="btn btn-danger">Reject</a>
+			<a id="reject" href="{% url 'wiki_reject_review' archive.id %}" class="btn btn-danger">Reject</a>
 		</div>
 		<div class="col">
 			<a  href="{% url 'wiki_accept_review' archive.id %}" class="btn btn-primary">Accept</a>
 		</div>
 	</div>
+
+	<script>
+		const reject = document.getElementById("reject");
+
+		reject.addEventListener("click", function(event) {
+			event.preventDefault();
+			if (confirm("Please contact {{creator_username}} and Explain why you reject this update")) {
+				window.location.href = this.href;
+			}
+		});
+	</script>
 {% endblock %}

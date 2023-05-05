@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 
 from .models import WikiContent, WikiContentArchive, WikiContentForm, WikiFolder, WikiFolderForm
@@ -23,6 +24,7 @@ def wiki_approval(request):
 @login_required(login_url='/')
 def wiki_review(request, archive_id):
     archive = get_object_or_404(WikiContentArchive, pk=archive_id)
+    creator = get_object_or_404(User, pk=archive.created_by)
     wiki = {}
     if archive.content_id != 0:
         wiki = get_object_or_404(WikiContent, pk=archive.content_id)
@@ -30,6 +32,7 @@ def wiki_review(request, archive_id):
     context = {
         'archive': archive,
         'wiki': wiki,
+        'creator_username': creator.username
     }
     return render(request, 'wiki/review.html', context)
 
@@ -67,6 +70,10 @@ def wiki_accept_review(request, archive_id):
         archive.save()
     return HttpResponseRedirect(reverse('wiki_approval'))
 
+def wiki_reject_review(request, archive_id):
+    archive = get_object_or_404(WikiContentArchive, pk=archive_id)
+    archive.delete()
+    return HttpResponseRedirect(reverse('wiki_approval'))
 
 @login_required(login_url='/')
 def wiki_home(request):
