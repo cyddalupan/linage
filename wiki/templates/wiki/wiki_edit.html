@@ -17,16 +17,28 @@
             Back
         </a>
     </div>
-    <br><br>
-
+    <br>
+    {% if wiki.is_updating %}   
+    <div class="alert alert-warning d-flex align-items-center justify-content-between" role="alert">
+        <div>
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Sorry, you are unable to edit this page at the moment. It appears that someone has recently made changes and those changes require approval before they can be implemented. Please take a moment to review the suggested changes and approve them if they meet your standards. Thank you for your understanding!
+        </div>
+        <button type="button" class="btn btn-primary">Review</button>
+    </div>
+    {% endif %}
+    <br>
     <form action="{% url 'wiki edit' wiki.id %}" method="post">
         {% csrf_token %}
         {{ formset|crispy }}
+        <br>
         <div class="row justify-content-between">
             <div class="col-1 d-grid">
+                {% if not wiki.is_updating %}  
                 <a class="btn btn-danger" href="{% url 'wiki delete' wiki.id %}" role="button">
                     Delete
                 </a>
+                {% endif %}
             </div>
             <div class="col-1 d-grid">
                 <button type="submit" class="btn btn-primary"
@@ -39,5 +51,5 @@
             </div>
         </div>
     </form>    
-
+    <br><br>
 {% endblock %}

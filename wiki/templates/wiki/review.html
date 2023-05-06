@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
+
+	<h1>{{ archive.status }} {{ archive.title }}</h1>
+	<br><br>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<h2>
+					Before
+				</h2>
+				<br>
+				{% if archive.status == 'Edit' %}
+				<h4>
+					{{ wiki.title }}
+				</h4>
+				<p>
+					{{ wiki.content }}
+				</p>
+				{% elif archive.status == 'Add' %}
+				<h4>
+					Does not exist yet
+				</h4>
+				{% endif %}
+			</div>
+			<div class="col-md-6">
+				<h2>
+					After
+				</h2>
+				<br>
+				{% if archive.status == 'Delete' %}
+				<h4>
+					This will be Deleted
+				</h4>
+				{% else %}
+				<h4>
+					{{ archive.title }}
+				</h4>
+				<p>
+					{{ archive.content }}
+				</p>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col">
+			<a id="reject" href="{% url 'wiki_reject_review' archive.id %}" class="btn btn-danger">Reject</a>
+		</div>
+		<div class="col">
+			<a  href="{% url 'wiki_accept_review' archive.id %}" class="btn btn-primary">Accept</a>
+		</div>
+	</div>
+
+	<script>
+		const reject = document.getElementById("reject");
+
+		reject.addEventListener("click", function(event) {
+			event.preventDefault();
+			if (confirm("Please contact {{creator_username}} and Explain why you reject this update")) {
+				window.location.href = this.href;
+			}
+		});
+	</script>
+{% endblock %}

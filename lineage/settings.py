@@ -126,8 +126,7 @@ LOGOUT_REDIRECT_URL = "/"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-#STATIC_URL = '/staticfiles/'
- 
+STATIC_URL = '/staticfiles/' 
 STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
 STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))]
 
@@ -151,9 +150,9 @@ LOGIN_REDIRECT_URL = "wiki_approval"
 LOGOUT_REDIRECT_URL = "home"
 
 # Codespace
-STATIC_URL = '/proxy/8081/staticfiles/'
-SECURE_SSL_REDIRECT = False
+#STATIC_URL = '/proxy/8081/staticfiles/'
+#SECURE_SSL_REDIRECT = False
 
 #FORCE_SCRIPT_NAME = 'https://cyd.cadavonahomelab.com/proxy/8000'
-CSRF_TRUSTED_ORIGINS = ['https://cyd.cadavonahomelab.com']
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+CSRF_TRUSTED_ORIGINS = ['https://cyd-8000.cadavonahomelab.com']
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

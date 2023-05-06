@@ -42,12 +42,14 @@ class WikiContentForm(ModelForm):
         fields = ["title", "content", "folder"]
 
 class WikiContentArchive(models.Model):
+    content_id = models.IntegerField(default=0)
     title = models.CharField(max_length=255)
     content = models.TextField()    
     folder = models.ForeignKey(WikiFolder, on_delete=models.CASCADE, null=True)
     approver1_id = models.IntegerField(default=0)
     approver2_id = models.IntegerField(default=0)
     is_approved = models.BooleanField(default=False)
+    status = models.CharField(max_length=255, default="")
     created_by = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
 

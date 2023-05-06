@@ -6,13 +6,74 @@ from django.db.models import Q
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.core.mail import send_mail
 
 from .models import WikiContent, WikiContentArchive, WikiContentForm, WikiFolder, WikiFolderForm
 
 @login_required(login_url='/')
 def wiki_approval(request):
-    return render(request, 'wiki/approval.html')
+    current_user = request.user
+    archives = WikiContentArchive.objects.filter(is_approved = False)
+    context = {
+        'current_user': current_user,
+        'archives': archives,
+    }
+    return render(request, 'wiki/approval.html', context)
+
+@login_required(login_url='/')
+def wiki_review(request, archive_id):
+    archive = get_object_or_404(WikiContentArchive, pk=archive_id)
+    creator = get_object_or_404(User, pk=archive.created_by)
+    wiki = {}
+    if archive.content_id != 0:
+        wiki = get_object_or_404(WikiContent, pk=archive.content_id)
+    
+    context = {
+        'archive': archive,
+        'wiki': wiki,
+        'creator_username': creator.username
+    }
+    return render(request, 'wiki/review.html', context)
+
+def wiki_accept_review(request, archive_id):
+    current_user = request.user
+    archive = get_object_or_404(WikiContentArchive, pk=archive_id)
+    if archive.approver1_id == 0:
+        archive.approver1_id = current_user.id
+        archive.save()
+    else:
+        if archive.status == "Add":
+            wiki = WikiContent(
+                title = archive.title,
+                content = archive.content,
+                folder = archive.folder,
+                created_by = archive.created_by,
+                updated_by = archive.created_by,
+            )
+            wiki.save()
+        if archive.status == "Edit":
+            wiki = get_object_or_404(WikiContent, pk=archive.content_id)
+            wiki.title = archive.title
+            wiki.content = archive.content
+            wiki.folder = archive.folder
+            wiki.is_updating = False
+            wiki.created_by = archive.created_by
+            wiki.updated_by = archive.created_by
+            wiki.save()
+        if archive.status == "Delete":
+            wiki = get_object_or_404(WikiContent, pk=archive.content_id)
+            wiki.delete()
+        # Archive Update
+        archive.approver2_id = current_user.id
+        archive.is_approved = True
+        archive.save()
+    return HttpResponseRedirect(reverse('wiki_approval'))
+
+def wiki_reject_review(request, archive_id):
+    archive = get_object_or_404(WikiContentArchive, pk=archive_id)
+    archive.delete()
+    return HttpResponseRedirect(reverse('wiki_approval'))
 
 @login_required(login_url='/')
 def wiki_home(request):
@@ -90,13 +151,15 @@ def wiki_edit(request, wiki_id):
             # Archive
             folder = WikiFolder.objects.get(pk=request.POST['folder'])
             archive = WikiContentArchive(
+                content_id = wiki_id,
                 title = request.POST['title'],
                 content = request.POST['content'],
                 folder = folder,
+                status = "Edit",
                 created_by = current_user.id
             )
             archive.save()
-            return HttpResponseRedirect(reverse('wiki page', args=(wiki.id,)))
+            return HttpResponseRedirect(reverse('wiki_approval'))
     else:
         formset = WikiContentForm(instance=wiki)
     wiki_folders = WikiFolder.objects.all()
@@ -113,11 +176,16 @@ def wiki_create(request, folder_id):
     if request.method == 'POST':
         formset = WikiContentForm(request.POST)
         if formset.is_valid():
-            wiki = formset.save(commit=False)
-            wiki.created_by = current_user.id
-            wiki.updated_by = current_user.id
-            wiki.save()
-            return HttpResponseRedirect(reverse('wiki folder', args=[wiki.folder.id] ))
+            folder = WikiFolder.objects.get(pk=request.POST['folder'])
+            archive = WikiContentArchive(
+                title = request.POST['title'],
+                content = request.POST['content'],
+                folder = folder,
+                status = "Add",
+                created_by = current_user.id
+            )
+            archive.save()
+            return HttpResponseRedirect(reverse('wiki_approval'))
     else:
         formset = WikiContentForm(initial={'folder': folder_id})
     wiki_folders = WikiFolder.objects.all()
@@ -130,9 +198,21 @@ def wiki_create(request, folder_id):
 
 @login_required(login_url='/')
 def wiki_delete(request, wiki_id):
-    wiki = get_object_or_404(WikiContent, pk=wiki_id)
-    wiki.delete()
-    return HttpResponseRedirect(reverse('wiki home'))
+    current_user = request.user
+    # Content
+    wikiContent = WikiContent.objects.get(pk=wiki_id)
+    wikiContent.is_updating = True
+    wikiContent.save()
+    #Archive
+    archive = WikiContentArchive(
+        content_id = wiki_id,
+        title = wikiContent.title,
+        content = wikiContent.content,
+        status = "Delete",
+        created_by = current_user.id
+    )
+    archive.save()
+    return HttpResponseRedirect(reverse('wiki_approval'))
 
 @login_required(login_url='/')
 def folder_create(request, folder_id):
