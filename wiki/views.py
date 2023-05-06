@@ -141,6 +141,9 @@ def wiki_page(request, wiki_id):
 def wiki_edit(request, wiki_id):
     current_user = request.user
     wiki = get_object_or_404(WikiContent, pk=wiki_id)
+    archive = {}
+    if wiki.is_updating:
+        archive = WikiContentArchive.objects.filter(Q(content_id=wiki.id) & Q(is_approved=False)).first()
     if request.method == 'POST':
         formset = WikiContentForm(request.POST, instance=wiki)
         if formset.is_valid():
@@ -166,7 +169,9 @@ def wiki_edit(request, wiki_id):
     context = {
         'wiki': wiki,
         'wiki_folders':wiki_folders,
-        'formset': formset
+        'formset': formset,
+        'archive': archive,
+        'current_user': current_user
     }
     return render(request, 'wiki/wiki_edit.html', context)
 
