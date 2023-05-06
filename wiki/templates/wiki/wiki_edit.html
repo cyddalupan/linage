@@ -35,7 +35,7 @@
         <div class="row justify-content-between">
             <div class="col-1 d-grid">
                 {% if not wiki.is_updating %}  
-                <a class="btn btn-danger" href="{% url 'wiki delete' wiki.id %}" role="button">
+                <a id="confirm" class="btn btn-danger" href="{% url 'wiki delete' wiki.id %}" role="button">
                     Delete
                 </a>
                 {% endif %}
@@ -52,4 +52,15 @@
         </div>
     </form>    
     <br><br>
+
+    <script>
+        const verify = document.getElementById("confirm");
+
+        verify.addEventListener("click", function(event) {
+            event.preventDefault();
+            if (confirm("Are you sure you wan't to Delete {{ wiki.title }}?")) {
+                window.location.href = this.href;
+            }
+        });
+    </script>
 {% endblock %}
