@@ -29,7 +29,13 @@
                 </a>
             </div>
             <div class="col-1 d-grid">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary"
+                {% if wiki.is_updating %}
+                    disabled
+                {% endif %}
+                >
+                    Submit
+                </button>
             </div>
         </div>
     </form>    
