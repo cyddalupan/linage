@@ -25,7 +25,7 @@
             Sorry, you are unable to edit this page at the moment. It appears that someone has recently made changes and those changes require approval before they can be implemented. Please take a moment to review the suggested changes and approve them if they meet your standards. Thank you for your understanding!
         </div>
         {% if archive.created_by != current_user.id %} 
-        <button type="button" class="btn btn-primary">Review</button>
+        <a href="{% url 'wiki_review' archive.id %}" class="btn btn-primary">Review</a>
         {% endif %}
     </div>
     {% endif %}
