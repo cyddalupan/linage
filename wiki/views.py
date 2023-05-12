@@ -290,3 +290,15 @@ def send_email(request):
     email_from = 'lineage.theloop@gmail.com'
     recipient_list = ['cydmdalupan@gmail.com']
     send_mail(subject, message, email_from, recipient_list, fail_silently=False)
+
+@login_required(login_url='/')
+def wiki_revert(request, wiki_id):
+		archives = WikiContentArchive.objects.filter(content_id=wiki_id)
+		paired = [(archives[i], archives[i+1]) for i in range(0, len(archives), 2)]
+			
+		context = {
+			'paired': paired 
+		}
+		return render(request, 'wiki/wiki_revert.html', context)
+
+

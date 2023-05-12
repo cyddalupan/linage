@@ -17,5 +17,6 @@ urlpatterns = [
     path('folder-create/<int:folder_id>', views.folder_create, name="folder create"),
     path('folder-edit/<int:folder_id>', views.folder_edit, name='folder edit'),
     path('folder-delete/<int:folder_id>', views.folder_delete, name='folder delete'),
+    path('revert/<int:wiki_id>/', views.wiki_revert, name='wiki_revert'),
     path('email', views.send_email, name='send email')
 ]
