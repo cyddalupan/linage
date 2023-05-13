@@ -294,10 +294,10 @@ def send_email(request):
 @login_required(login_url='/')
 def wiki_revert(request, wiki_id):
 		archives = WikiContentArchive.objects.filter(content_id=wiki_id)
-		paired = [(archives[i], archives[i+1]) for i in range(0, len(archives), 2)]
 			
 		context = {
-			'paired': paired 
+			'wiki_id': wiki_id,
+			'archives':archives 
 		}
 		return render(request, 'wiki/wiki_revert.html', context)
 
