@@ -3,18 +3,18 @@
 {% block content %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'wiki/style.css' %}">
-    <h1>
-        <a class="header-link" href="{% url 'wiki home' %}">
-            <i class="bi bi-newspaper"></i>
-            Wiki
-        </a>
-    </h1>
-
-    <p>
-        <figcaption class="blockquote-footer">
-            In order to maintain better organization, it's recommended that we limit the number of items in each folder to ten. For instance, if there are more than ten items in a particular folder "folder or wiki", we should consider grouping them and moving them to a more appropriately categorized folder. This approach not only prevents over-organization but also encourages timely grouping of items, without waiting for them to accumulate beyond ten.
-        </figcaption>
-    </p>
+ 
+		<div class="container">
+			<div class="alert alert-info">
+				<strong>Note:</strong> In order to maintain better organization, it's recommended that we limit the number of items in each folder to ten. For instance, if there are more than ten items in a particular folder "folder or wiki", we should consider grouping them and moving them to a more appropriately categorized folder. This approach not only prevents over-organization but also encourages timely grouping of items, without waiting for them to accumulate beyond ten.
+			</div>
+		</div>
+		<h1>
+			<a class="header-link" href="{% url 'wiki home' %}">
+				<i class="bi bi-newspaper"></i>
+				Wiki
+			</a>
+		</h1>
     </br>
     {% if messages %}
         {% for message in messages %}
