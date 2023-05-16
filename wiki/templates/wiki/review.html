@@ -21,6 +21,9 @@
 				<p>
 					{{ wiki.content }}
 				</p>
+				<h6>
+					{{ wiki.folder }}
+				</h6>
 				{% elif archive.status == 'Add' %}
 				<h4>
 					Does not exist yet
@@ -43,6 +46,9 @@
 				<p>
 					{{ archive.content }}
 				</p>
+				<h6>
+					{{ archive.folder }}
+				</h6>
 				{% endif %}
 			</div>
 		</div>
